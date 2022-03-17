@@ -1,0 +1,49 @@
+@import "variables";
+@import "bootstrap";
+
+
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+header{
+    border-bottom: 1px solid $border-color;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    margin: 10px;
+
+    .title{
+        font-size: 14px;
+    }
+}
+
+.flex-container{
+    flex-grow: 1;
+    display: flex;
+    background-color: whitesmoke;
+    #main-nav{
+        width: 300px;
+        border-right: 1px solid $border-color;
+        background-color: white;
+        margin: 10px;
+        padding: 10px;
+    }
+    main{
+        flex-grow: 1;
+        margin: 10px;
+        background-color: white;
+        padding: 10px;
+    }
+}
+footer{
+    height: 50px;
+    text-align: center;
+    border-top: 1px solid $border-color;
+}
