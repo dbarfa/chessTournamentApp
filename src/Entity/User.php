@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use App\Enumeration\SexEnum;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -49,6 +52,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string')]
     private $password;
+
+    #[ORM\ManyToMany(targetEntity: Tournament::class, mappedBy: 'players')]
+    private $tournaments;
+
+    public function __construct()
+    {
+        $this->tournaments = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -229,6 +240,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPic($pic)
     {
         $this->pic = $pic;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tournament>
+     */
+    public function getTournaments(): Collection
+    {
+        return $this->tournaments;
+    }
+
+    public function addTournament(Tournament $tournament): self
+    {
+        if (!$this->tournaments->contains($tournament)) {
+            $this->tournaments[] = $tournament;
+            $tournament->addPlayer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTournament(Tournament $tournament): self
+    {
+        if ($this->tournaments->removeElement($tournament)) {
+            $tournament->removePlayer($this);
+        }
+
         return $this;
     }
 
