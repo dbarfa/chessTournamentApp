@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+
+
+    <table class="table">
+
+        <thead>
+        <tr>
+            <th class="col">#</th>
+            <th class="col">username</th>
+            <th class="col">First Name</th>
+            <th class="col">Last Name</th>
+            <th class="col">Birth Date</th>
+            <th class="col">sex</th>
+            <th class="col">delete</th>
+        </tr>
+        </thead>
+        <tbody>
+
+
+        {% for p in print %}
+            <tr>
+                <td class="col">{{ p.id }}</td>
+                <td class="col">{{ p.username }}</td>
+                <td class="col">{{ p.firstName }}</td>
+                <td class="col">{{ p.lastName }}</td>
+                <td class="col">{{ p.birthDate | date('d-m-Y') }}</td>
+                <td class="col">{{ p.sex.value }}</td>
+                <td class="col">
+                    <button class="btn btn-danger">Delete</button>
+                </td>
+            </tr>
+
+        {% endfor %}
+
+
+        </tbody>
+
+
+    </table>
+
+
+
+
+
+
+
+
+
+
+
+
+    {% for p in print %}
+        {{ p.id }} {{ p.username }} {{ p.firstName }} {{ p.lastName }} {{ p.birthDate | date('y') }}  <br>
+    {% endfor %}
+    {#    <button class="btn btn-danger">Confirm</button> #}
+    {#    <button class="btn btn-danger">Delete</button> #}
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

@@ -36,13 +36,13 @@ class Tournament
     #[ORM\Column(type: 'integer', nullable: true)]
     private $eloMax;
 
-    #[ORM\Column(type: 'string', length: 255,enumType: AgeCategoryEnum::class)]
+    #[ORM\Column(type: 'string',enumType: AgeCategoryEnum::class)]
     private $ageCat;
 
-    #[ORM\Column(type: 'string', length: 255,enumType: SexEnum::class)]
+    #[ORM\Column(type: 'string',enumType: SexEnum::class)]
     private $sex;
 
-    #[ORM\Column(type: 'string', length: 255,enumType: TournTypeEnum::class)]
+    #[ORM\Column(type: 'string',enumType: TournTypeEnum::class)]
     private $type;
 
     #[ORM\Column(type: 'integer', nullable: true)]
@@ -88,15 +88,21 @@ class Tournament
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getDate()
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    /**
+     * @param mixed $date
+     * @return Tournament
+     */
+    public function setDate($date)
     {
         $this->date = $date;
-
         return $this;
     }
 

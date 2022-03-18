@@ -47,8 +47,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string',nullable: true)]
     private $pic;
 
-    #[ORM\Column(type: 'json')]
-    private $roles = [];
+
+    #[ORM\ManyToMany(targetEntity: Role::class)]
+    private $roles;
 
     #[ORM\Column(type: 'string')]
     private $password;
@@ -94,7 +95,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $roles = [];
         // guarantee every user at least has ROLE_USER
         foreach ($this->roles as $role){
             $roles[] = $role->getLabel();

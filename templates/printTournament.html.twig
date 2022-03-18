@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+
+    <table class="table">
+
+        <thead>
+        <tr>
+            <th class="col">#</th>
+            <th class="col">name</th>
+            <th class="col">city</th>
+            <th class="col">date</th>
+            <th class="col">Age cat.</th>
+            <sh class="col">Sex</sh>
+            <th class="col">Type</th>
+            <th class="col">Join</th>
+
+        </tr>
+        </thead>
+        <tbody>
+
+
+        {% for p in print %}
+            <tr>
+                <td class="col">{{ p.id }}</td>
+                <td class="col">{{ p.name }}</td>
+                <td class="col">{{ p.city }}</td>
+                <td class="col">{{ p.date|date('d-m-Y') }}</td>
+{#                <td class="col">{{ dump(p.ageCat) }}</td>#}
+{#                <td class="col">{{ p.sex.value }}</td>#}
+{#                <td class="col">{{ p.type.value }}</td>#}
+
+                <td class="col">
+                    <button class="btn btn-danger">Delete</button>
+                </td>
+            </tr>
+
+        {% endfor %}
+
+
+        </tbody>
+
+
+    </table>
+
+
+    {% for p in print %}
+        {{ p.id }} {{ p.name }} {{ p.city }} {{ p.rated }} <br>
+    {% endfor %}
+<button class="btn btn-danger">Confirm</button>
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
