@@ -2,6 +2,23 @@
 
     <ul class="nav flex-column">
 
+
+        {% if app.user  %}
+            <li class="nav-item">
+                <a class="nav-link active"> Connected as: {{ app.user.username }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('logout') }}">Logout <i class="fa-solid fa-arrow-right-to-bracket"></i></a></li>
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('login') }}">Login<i class="fa-solid fa-arrow-right-to-bracket"></i></a>            </li>
+
+
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('app_register') }}">Sign up<i class="fa-solid fa-user-plus"></i></a></li>
+        {% endif %}
+
+        <hr>
         <li class="nav-item" >
             <a class="nav-link active" href="{{ path('app_home') }}"><i
                         class="fa fa-home me-2"></i>Home</a>
