@@ -3,9 +3,23 @@
 {% block body %}
 
 
-    <a href="{{ path('app_home') }}" class="btn btn-dark m-2 float-lg-end   ">Nouveau Tournoi</a>
 
-    <table class="table">
+    <form id="seqrch" method="get">
+
+
+
+        <div class="container">
+
+            <div class="form-group col-md-2">
+                <input class="form-control " placeholder="keyword" name="keyword">
+            </div>
+        </div>
+    </form>
+    <div class="hello">
+        <input class="btn btn-primary m-3" type="submit" form="seqrch" value="Search"/>
+        <a href="{{ path('add_tournament') }}" class="btn btn-dark m-3 float-lg-end">New Tournament</a>
+
+    <table class="table table-hover  table-light ">
 
         <thead>
         <tr>
@@ -25,41 +39,45 @@
 
         {# #}
         {#        test#}
-        <tr>
-            <td class="col">{{ 'test'|slice(0,2)}}</td>
-            <td class="col">{{ 'dhgfgfdhdgf'|slice(0,5)}}</td>
-            <td class="col">d</td>
-            <td class="col">d</td>
-            <td class="col">d</td>
-            <td class="col">d</td>
-            <td class="col">d</td>
+{#        <tr>#}
+{#            <td class="col">{{ 'test'|slice(0,2)}}</td>#}
+{#            <td class="col">{{ 'dhgfgfdhdgf'|slice(0,5)}}</td>#}
+{#            <td class="col">d</td>#}
+{#            <td class="col">d</td>#}
+{#            <td class="col">d</td>#}
+{#            <td class="col">d</td>#}
+{#            <td class="col">d</td>#}
 
-            <td class="col">
-                <button class="btn btn-danger">Join</button>
-            </td>
-        </tr>
+{#            <td class="col">#}
+{#                <button class="btn btn-danger">Join</button>#}
+{#            </td>#}
+{#        </tr>#}
         {# #}
         {#        test#}
 
 
 
 
-        {#        {% for p in print %}#}
-        {#            <tr>#}
-        {#                <td class="col">{{ p.id }}d</td>#}
-        {#                <td class="col">{{ p.name }}d</td>#}
-        {#                <td class="col">{{ p.city }}d</td>#}
-        {#                <td class="col">{{ p.date|date('d-m-Y') }}d</td>#}
-        {#                <td class="col">{{ dump(p.ageCat) }}d</td>#}
-        {#                <td class="col">{{ p.sex.value }}d</td>#}
-        {#                <td class="col">{{ p.type.value }}d</td>#}
+                {% for p in print %}
+                    <tr>
+                        <td class="col">{{ p.id }}</td>
+                        <td class="col">{{ p.name }}</td>
+                        <td class="col">{{ p.city }}</td>
+                        <td class="col">{{ p.date|date('d-m-Y') }}</td>
+                        <td class="col">{{ p.ageCat.value }}</td>
+                        <td class="col">{{ p.sex.value }}</td>
+                        <td class="col">{{ p.type.value }}</td>
 
-        {#                <td class="col">#}
-        {#                    <button class="btn btn-danger">Join</button>#}
-        {#                </td>#}
-        {#            </tr>#}
+                        <td class="col">
+                            <button class="btn btn-danger
+                                                    {% if app.user!=true %}
+                                                        disabled
+                                                    {% endif %}"
+                            >Join</button>
+                        </td>
+                    </tr>
 
-        {#        {% endfor %}#}
+                {% endfor %}
 
 
         </tbody>
@@ -67,12 +85,11 @@
 
     </table>
 
-
+<div data-user="{{ app.user?app.user.id:0 }}" data-controller="canjoin"></div>
 
     {% for p in print %}
         {#        {{ p.id }} {{ p.name }} {{ p.city }} {{ p.rated }} <br>#}
     {% endfor %}
-    <button class="btn btn-danger">Confirm</button>
 
 {% endblock %}
 

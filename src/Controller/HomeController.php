@@ -64,7 +64,7 @@ class HomeController extends AbstractController
         return $this->render('home/index.html.twig');
     }
 
-    #[Route('/printUser',name: 'printUser')]
+    #[Route(':/user',name: 'printUser')]
     public function printUser(Request $request, UserRepository $repo){
         $print = $repo->findAll();
 

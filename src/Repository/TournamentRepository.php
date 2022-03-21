@@ -73,4 +73,38 @@ class TournamentRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function countBySearch($keyword)
+    {
+        $qb=$this->_getQbWithSearch($keyword);
+
+        $qb->select('count(t.id)');
+        // permet de recuperer une valeur unique et une un objet ou une collection
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+    public function findBySearch($offset, $limit, $keyword)
+    {
+
+        $qb=$this->_getQbWithSearch($keyword);
+        if ($offset) {
+            $qb->setFirstResult($offset);
+        }
+        if ($limit) {
+            $qb->setMaxResults($limit);
+        }
+        $qb->orderBy('t.id');
+        return $qb->getQuery()->getResult();
+    }
+
+    private function _getQbWithSearch($keyword)
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->where('t.deleted = 0');
+        if ($keyword) {
+            $qb->andWhere('t.name LIKE :p3');
+            $qb->setParameter('p3', $keyword . '%');
+        }
+        return $qb;
+    }
+
+
 }

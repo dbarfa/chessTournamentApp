@@ -54,6 +54,9 @@ class Tournament
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'tournaments')]
     private $players;
 
+    #[ORM\Column(type: 'boolean',options: ['default' => 0])]
+    private $deleted;
+
     public function __construct()
     {
         $this->players = new ArrayCollection();
@@ -142,41 +145,65 @@ class Tournament
         return $this;
     }
 
-    public function getAgeCat(): ?string
+    /**
+     * @return mixed
+     */
+    public function getAgeCat()
     {
         return $this->ageCat;
     }
 
-    public function setAgeCat(?string $ageCat): self
+    /**
+     * @param mixed $ageCat
+     * @return Tournament
+     */
+    public function setAgeCat($ageCat)
     {
         $this->ageCat = $ageCat;
-
         return $this;
     }
 
-    public function getSex(): ?string
+    /**
+     * @return mixed
+     */
+    public function getSex()
     {
         return $this->sex;
     }
 
-    public function setSex(?string $sex): self
+    /**
+     * @param mixed $sex
+     * @return Tournament
+     */
+    public function setSex($sex)
     {
         $this->sex = $sex;
-
         return $this;
     }
 
-    public function getType(): ?string
+    /**
+     * @return mixed
+     */
+    public function getType()
     {
         return $this->type;
     }
 
-    public function setType(string $type): self
+    /**
+     * @param mixed $type
+     * @return Tournament
+     */
+    public function setType($type)
     {
         $this->type = $type;
-
         return $this;
     }
+
+
+
+
+
+
 
     public function getNrMin(): ?int
     {
@@ -222,6 +249,18 @@ class Tournament
     public function removePlayer(User $player): self
     {
         $this->players->removeElement($player);
+
+        return $this;
+    }
+
+    public function getDeleted(): ?bool
+    {
+        return $this->deleted;
+    }
+
+    public function setDeleted(bool $deleted): self
+    {
+        $this->deleted = $deleted;
 
         return $this;
     }
