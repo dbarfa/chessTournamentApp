@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+    <a href="{{ path('app_home') }}" class="btn btn-dark m-2 float-lg-end   ">Nouveau Tournoi</a>
+
+    <table class="table">
+
+        <thead>
+        <tr>
+            <th class="col">#</th>
+            <th class="col">name</th>
+            <th class="col">city</th>
+            <th class="col">date</th>
+            <th class="col">age cat.</th>
+            <th class="col">sex</th>
+            <th class="col">type</th>
+            <th class="col">join</th>
+
+        </tr>
+        </thead>
+        <tbody>
+
+
+        {# #}
+        {#        test#}
+        <tr>
+            <td class="col">{{ 'test'|slice(0,2)}}</td>
+            <td class="col">{{ 'dhgfgfdhdgf'|slice(0,5)}}</td>
+            <td class="col">d</td>
+            <td class="col">d</td>
+            <td class="col">d</td>
+            <td class="col">d</td>
+            <td class="col">d</td>
+
+            <td class="col">
+                <button class="btn btn-danger">Join</button>
+            </td>
+        </tr>
+        {# #}
+        {#        test#}
+
+
+
+
+        {#        {% for p in print %}#}
+        {#            <tr>#}
+        {#                <td class="col">{{ p.id }}d</td>#}
+        {#                <td class="col">{{ p.name }}d</td>#}
+        {#                <td class="col">{{ p.city }}d</td>#}
+        {#                <td class="col">{{ p.date|date('d-m-Y') }}d</td>#}
+        {#                <td class="col">{{ dump(p.ageCat) }}d</td>#}
+        {#                <td class="col">{{ p.sex.value }}d</td>#}
+        {#                <td class="col">{{ p.type.value }}d</td>#}
+
+        {#                <td class="col">#}
+        {#                    <button class="btn btn-danger">Join</button>#}
+        {#                </td>#}
+        {#            </tr>#}
+
+        {#        {% endfor %}#}
+
+
+        </tbody>
+
+
+    </table>
+
+
+
+    {% for p in print %}
+        {#        {{ p.id }} {{ p.name }} {{ p.city }} {{ p.rated }} <br>#}
+    {% endfor %}
+    <button class="btn btn-danger">Confirm</button>
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

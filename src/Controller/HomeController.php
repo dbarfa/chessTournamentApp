@@ -77,18 +77,5 @@ class HomeController extends AbstractController
         ]);
 
         }
-    #[Route('/printTournament',name: 'printTournament')]
 
-    public function printTournament(Request $request, TournamentRepository $repo)
-    {
-        $print = $repo->findAll();
-
-
-        dump($print);
-
-
-        return $this->render('printTournament.html.twig',[
-            'print'=>$print
-        ]);
-        }
 }

@@ -29,23 +29,24 @@ header{
     display: flex;
     background-color: whitesmoke;
     #main-nav{
-        width: 300px;
+        flex-grow: 4;
+        flex-basis: 0;
         border-right: 1px solid $border-color;
         background-color: white;
         margin: 10px 0 10px 10px;
         padding: 10px;
     }
     main{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        flex-grow: 2;
+
+        flex-grow: 9;
         margin: 10px;
         background-color: white;
         padding: 10px;
+
     }
     #div1{
-        width: 300px;
+        flex-grow: 3;
+        flex-basis: 0;
         margin: 10px 10px 10px 0;
         background-color: white;
         padding: 10px;
