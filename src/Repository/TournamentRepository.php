@@ -89,7 +89,7 @@ class TournamentRepository extends ServiceEntityRepository
         $qb = $this->_getQbWithSearch($search[2]);
         //offset
         if ($search[0]) {
-            $qb->setFirstResult($search[1]);
+            $qb->setFirstResult($search[0]);
         }
         //limit
         if ($search[1]) {
@@ -99,23 +99,7 @@ class TournamentRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    private function findBySearchPriv($search)
-    {
-        //this is a temporary function identical to the public one made for visibility
 
-        //keyword
-        $qb = $this->_getQbWithSearch($search[2]);
-        //offset
-        if ($search[0]) {
-            $qb->setFirstResult($search[1]);
-        }
-        //limit
-        if ($search[1]) {
-            $qb->setMaxResults($search[1]);
-        }
-        $qb->orderBy('t.id');
-        return $qb;
-    }
 
     private function _getQbWithSearch($keyword)
     {
@@ -123,27 +107,14 @@ class TournamentRepository extends ServiceEntityRepository
         $qb->where('t.deleted = 0');
         if ($keyword) {
             $qb->andWhere('t.name LIKE :p3');
-            $qb->setParameter('p3', $keyword . '%');
+            $qb->setParameter('p3', '%'.$keyword . '%');
         }
         return $qb;
     }
 
-    public function findBySearchRequirements($search,$requirements)
-    {
-        $qb = $this->findBySearchPriv($search);
-        $qb->andWhere('t.eloMin < :t1 AND :t1 < t.eloMax');
-        $qb->setParameter('t1', $requirements['elo'] );
-        $qb->andWhere('t.sex = :t2');
-        $qb->setParameter('t2', $requirements['sex'] );
-        $qb->andWhere('t.ageCat = :t3');
-        $qb->setParameter('t3', $requirements['age'] );
 
-        return $qb->getQuery()->getResult();
-    }
 
-    private function requirements(){
 
-    }
 
 
 }

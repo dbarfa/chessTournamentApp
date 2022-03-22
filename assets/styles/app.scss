@@ -29,8 +29,7 @@ header{
     display: flex;
     background-color: whitesmoke;
     #main-nav{
-        flex-grow: 4;
-        flex-basis: 0;
+        flex-grow: 1;
         border-right: 1px solid $border-color;
         background-color: white;
         margin: 10px 0 10px 10px;
@@ -38,21 +37,22 @@ header{
     }
     main{
 
-        flex-grow: 9;
+
         margin: 10px;
         background-color: white;
         padding: 10px;
 
     }
     #div1{
-        flex-grow: 3;
-        flex-basis: 0;
+        flex-grow: 1;
+        width: 300px;
         margin: 10px 10px 10px 0;
         background-color: white;
         padding: 10px;
 
     }
 }
+
 footer{
     height: 50px;
     text-align: center;

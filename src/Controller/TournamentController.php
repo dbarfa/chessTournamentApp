@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Tournament;
-use App\Enumeration\AgeCategoryEnum;
 use App\Form\AddTournamentType;
 use App\Repository\TournamentRepository;
 use App\Repository\UserRepository;
@@ -21,82 +20,13 @@ class TournamentController extends AbstractController
 
         $search = [
             $request->query->get('offset'),
-            $request->query->get('limit') ?: 4,
+            $request->query->get('limit') ?: 10,
             $request->query->get('keyword')
         ];
 
-        $user = $this->getUser();
-        dump($user);
-
-
-        if (($user != null)) {
-            // user is connected => we do the findBySearchRequirements
-//         ////////////Elo
-            $userElo = $user->getElo();
-            dump($userElo);
-//          ////////////Sex
-
-            $userSex = $user->getSex()->value;
-            dump($userSex);
-//          ////////////Age
-            $userBirth = $user->getBirthDate();
-            $dateNow = new \DateTime();
-            $ageDate = $dateNow->diff($userBirth);
-            $ageInt = intval($ageDate->format('%y'));
-            dump($ageInt);
-
-            $ageCat = AgeCategoryEnum::Open->value;
-//            if ($ageInt < 18) {
-//                $ageCat = AgeCategoryEnum::Junior->value;
-//            } elseif ($ageInt <= 64) {
-//                $ageCat = AgeCategoryEnum::Senior->value;
-//            } elseif ($ageInt > 64) {
-//                $ageCat = AgeCategoryEnum::Veteran->value;
-//            }
-            dump($ageCat);
-
-
-            switch ($ageInt) {
-                case $ageInt < 18 :
-                    $ageCat = AgeCategoryEnum::Junior->value;
-                    break;
-                case $ageInt <= 64 :
-                    $ageCat = AgeCategoryEnum::Senior->value;
-                    break;
-                case $ageInt > 64 :
-                    $ageCat = AgeCategoryEnum::Veteran->value;
-                    break;
-            }
-
-
-            $requirements = [
-                'elo' => $userElo,
-                'sex' => $userSex,
-                'age' => $ageCat,
-            ];
-            dump($requirements);
-            dump($requirements['elo']);
-
-
-            $print = $repoTour->findBySearchRequirements($search, $requirements);
-//            $print = $repoTour->findAll();
-
-
-            dump('true');
-
-
-        } else {
-            dump('this is false');
-            $print = $repoTour->findBySearch($search);
-        }
-
-//        $print = $repo->findByReq($user);
-//        dump($print);
-
+        $print = $repoTour->findBySearch($search);
 
         $total = $repoTour->countBySearch($request->query->get('keyword'));
-
-
         return $this->render('tournament/index.html.twig', [
             'print' => $print,
             'total' => $total,
@@ -104,7 +34,7 @@ class TournamentController extends AbstractController
         ]);
     }
 
-    #[Route('add_tournament', name: 'add_tournament')]
+    #[Route('tournament/add', name: 'add_tournament')]
     public function addTournament(Request $request, EntityManagerInterface $em, TournamentRepository $repo)
     {
         $tournament = new Tournament();
@@ -124,5 +54,18 @@ class TournamentController extends AbstractController
             [
                 'form' => $form->createView()
             ]);
+    }
+
+    #[Route('tournament/join/{id}', name: 'join_tournament')]
+    public function joinTournament($id, TournamentRepository $repo,EntityManagerInterface $entityManager)
+    {
+        $tour = $repo->find($id);
+        $user = $this->getUser();
+        $user->addTournament($tour);
+        $entityManager->persist($user);
+        $entityManager->flush();
+        dump($user);
+
+        return $this->redirectToRoute('tournament');
     }
 }

@@ -1,5 +1,4 @@
 import { startStimulusApp } from '@symfony/stimulus-bridge';
-import canjoin_controller from "./controllers/canjoin_controller";
 
 // Registers Stimulus controllers from controllers.json and in the controllers/ directory
 export const app = startStimulusApp(require.context(
@@ -11,4 +10,3 @@ export const app = startStimulusApp(require.context(
 // register any custom, 3rd party controllers here
 // app.register('some_controller_name', SomeImportedController);
 
-app.register('canjoin', canjoin_controller);
