@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Enumeration\SexEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -34,28 +35,34 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Please enter a password',
                     ]),
                     new Length([
-                        'min' => 6,
+                        'min' => 3,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
                 ],
             ])
-            ->add('firstName', TextType::class,[
+            ->add('firstName', TextType::class, [
                 'required' => true,
 //                'class' => 'form-control'
             ])
-            ->add('lastName', TextType::class,[
+            ->add('lastName', TextType::class, [
                 'required' => true,
             ])
-            ->add('birthDate',DateType::class,[
+            ->add('birthDate', DateType::class, [
                 'widget' => 'single_text'
             ])
-            ->add('elo', NumberType::class,[
+            ->add('elo', NumberType::class, [
                 'required' => true,
             ])
-            ->add('sex',EnumType::class,[
-                'class' => SexEnum::class,
+            ->add('sex', EnumType::class, [
+                'class'=>SexEnum::class,
+                'choices' => [
+                      SexEnum::Male,
+                     SexEnum::Female,
+
+                ]
+
 
             ])
             ->add('agreeTerms', CheckboxType::class, [
@@ -65,8 +72,7 @@ class RegistrationFormType extends AbstractType
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

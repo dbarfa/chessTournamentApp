@@ -82,18 +82,39 @@ class TournamentRepository extends ServiceEntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
-    public function findBySearch($offset, $limit, $keyword)
+    public function findBySearch($search)
     {
 
-        $qb = $this->_getQbWithSearch($keyword);
-        if ($offset) {
-            $qb->setFirstResult($offset);
+        //keyword
+        $qb = $this->_getQbWithSearch($search[2]);
+        //offset
+        if ($search[0]) {
+            $qb->setFirstResult($search[1]);
         }
-        if ($limit) {
-            $qb->setMaxResults($limit);
+        //limit
+        if ($search[1]) {
+            $qb->setMaxResults($search[1]);
         }
         $qb->orderBy('t.id');
         return $qb->getQuery()->getResult();
+    }
+
+    private function findBySearchPriv($search)
+    {
+        //this is a temporary function identical to the public one made for visibility
+
+        //keyword
+        $qb = $this->_getQbWithSearch($search[2]);
+        //offset
+        if ($search[0]) {
+            $qb->setFirstResult($search[1]);
+        }
+        //limit
+        if ($search[1]) {
+            $qb->setMaxResults($search[1]);
+        }
+        $qb->orderBy('t.id');
+        return $qb;
     }
 
     private function _getQbWithSearch($keyword)
@@ -107,16 +128,16 @@ class TournamentRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function findBySearchRequirements($offset, $limit, $keyword, $user)
+    public function findBySearchRequirements($search,$requirements)
     {
-        $qb = $this->_getQbWithSearch($keyword);
-        if ($offset) {
-            $qb->setFirstResult($offset);
-        }
-        if ($limit) {
-            $qb->setMaxResults($limit);
-        }
-        $qb->orderBy('t.id');
+        $qb = $this->findBySearchPriv($search);
+        $qb->andWhere('t.eloMin < :t1 AND :t1 < t.eloMax');
+        $qb->setParameter('t1', $requirements['elo'] );
+        $qb->andWhere('t.sex = :t2');
+        $qb->setParameter('t2', $requirements['sex'] );
+        $qb->andWhere('t.ageCat = :t3');
+        $qb->setParameter('t3', $requirements['age'] );
+
         return $qb->getQuery()->getResult();
     }
 
