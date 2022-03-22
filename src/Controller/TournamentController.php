@@ -5,27 +5,63 @@ namespace App\Controller;
 use App\Entity\Tournament;
 use App\Form\AddTournamentType;
 use App\Repository\TournamentRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class TournamentController extends AbstractController
 {
     #[Route('/tournament', name: 'tournament')]
-    public function index(TournamentRepository $repo,Request $request): Response
+    public function index(TournamentRepository $repoTour,Request $request, UserRepository $repoUser): Response
     {
-        $print = $repo->findBySearch(
-            intval($request->query->get('offset')),
-            intval($request->query->get('limit')) ?: 4,
-            $request->query->get('keyword'));
 
 
-        dump($print);
+        $user = $this->getUser();
+        dump( $user);
 
 
-        $total = $repo->countBySearch($request->query->get('keyword'));
+
+        if (($user!=null)){
+            // user is connected => we do the findBySearchRequirements
+//         ////////////Elo
+            $userElo = $user->getElo();
+            dump($userElo);
+//          ////////////Sex
+
+            $userSex = $user->getSex();
+            dump($userSex->value);
+//          ////////////Age
+            $userBirth = $user->getBirthDate();
+            $dateNow = new \DateTime();
+            $ageDate = $dateNow->diff($userBirth);
+            $ageInt = intval($ageDate->format('%y'));
+            dump($ageInt);
+//          ////////////
+
+            $print = $repoTour->findAll();
+
+
+            dump('true');
+
+
+        }else{
+            dump('this is false');
+            $print = $repoTour->findBySearch(
+                intval($request->query->get('offset')),
+                intval($request->query->get('limit')) ?: 4,
+                $request->query->get('keyword'));
+        }
+
+//        $print = $repo->findByReq($user);
+//        dump($print);
+
+
+        $total = $repoTour->countBySearch($request->query->get('keyword'));
 
 
         return $this->render('tournament/index.html.twig',[
