@@ -57,9 +57,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Tournament::class, mappedBy: 'players')]
     private $tournaments;
 
+    #[ORM\ManyToMany(targetEntity: Matches::class, mappedBy: 'whiteId')]
+    private $matches;
+
     public function __construct()
     {
         $this->tournaments = new ArrayCollection();
+        $this->matches = new ArrayCollection();
     }
 
 
@@ -266,6 +270,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->tournaments->removeElement($tournament)) {
             $tournament->removePlayer($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Matches>
+     */
+    public function getMatches(): Collection
+    {
+        return $this->matches;
+    }
+
+    public function addMatch(Matches $match): self
+    {
+        if (!$this->matches->contains($match)) {
+            $this->matches[] = $match;
+            $match->addWhiteId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatch(Matches $match): self
+    {
+        if ($this->matches->removeElement($match)) {
+            $match->removeWhiteId($this);
         }
 
         return $this;

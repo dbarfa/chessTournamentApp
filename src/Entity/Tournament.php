@@ -58,9 +58,13 @@ class Tournament
     #[ORM\Column(type: 'boolean',options: ['default' => 0])]
     private $deleted;
 
+    #[ORM\OneToMany(mappedBy: 'tournamentId', targetEntity: Matches::class)]
+    private $matches;
+
     public function __construct()
     {
         $this->players = new ArrayCollection();
+        $this->matches = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -262,6 +266,36 @@ class Tournament
     public function setDeleted(bool $deleted): self
     {
         $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Matches>
+     */
+    public function getMatches(): Collection
+    {
+        return $this->matches;
+    }
+
+    public function addMatch(Matches $match): self
+    {
+        if (!$this->matches->contains($match)) {
+            $this->matches[] = $match;
+            $match->setTournamentId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatch(Matches $match): self
+    {
+        if ($this->matches->removeElement($match)) {
+            // set the owning side to null (unless already changed)
+            if ($match->getTournamentId() === $this) {
+                $match->setTournamentId(null);
+            }
+        }
 
         return $this;
     }
