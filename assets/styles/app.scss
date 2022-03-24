@@ -29,7 +29,7 @@ header{
     display: flex;
     background-color: whitesmoke;
     #main-nav{
-        flex-grow: 1;
+        width: 15vw;
         border-right: 1px solid $border-color;
         background-color: white;
         margin: 10px 0 10px 10px;
@@ -37,15 +37,14 @@ header{
     }
     main{
 
-
+        width: 70vw;
         margin: 10px;
         background-color: white;
         padding: 10px;
 
     }
     #div1{
-        flex-grow: 1;
-        width: 300px;
+        width: 15vw;
         margin: 10px 10px 10px 0;
         background-color: white;
         padding: 10px;

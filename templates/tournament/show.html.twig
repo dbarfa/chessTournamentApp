@@ -3,9 +3,7 @@
 {% block body %}
 
 
-
-
-    <table class="table">
+    <table class="table table-hover  table-light ">
 
         <thead>
         <tr>
@@ -14,23 +12,29 @@
             <th class="col">First Name</th>
             <th class="col">Last Name</th>
             <th class="col">Birth Date</th>
+            <th class="col">Elo</th>
+
             <th class="col">sex</th>
-            <th class="col">delete</th>
+
         </tr>
         </thead>
         <tbody>
 
-        {% for p in print %}
+        {% for p in print[0].players %}
             <tr>
+
+
+                {#                {{ dump(p.players) }}#}
+
+
                 <td class="col">{{ p.id }}</td>
                 <td class="col">{{ p.username }}</td>
                 <td class="col">{{ p.firstName }}</td>
                 <td class="col">{{ p.lastName }}</td>
                 <td class="col">{{ p.birthDate | date('d-m-Y') }}</td>
+                <td class="col">{{ p.elo }}</td>
                 <td class="col">{{ p.sex.value }}</td>
-                <td class="col">
-                    <button class="btn btn-danger">Delete</button>
-                </td>
+
             </tr>
 
         {% endfor %}
@@ -43,20 +47,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-    {% for p in print %}
-        {{ p.id }} {{ p.username }} {{ p.firstName }} {{ p.lastName }} {{ p.birthDate | date('y') }}  <br>
-    {% endfor %}
-    {#    <button class="btn btn-danger">Confirm</button> #}
-    {#    <button class="btn btn-danger">Delete</button> #}
 
 {% endblock %}
 

@@ -24,7 +24,7 @@ class TournamentController extends AbstractController
             $request->query->get('keyword')
         ];
 
-        $print = $repoTour->findBySearch($search);
+        $print = $repoTour->findAllWithUserAndSearch($search);
 
         $total = $repoTour->countBySearch($request->query->get('keyword'));
         return $this->render('tournament/index.html.twig', [
@@ -64,8 +64,20 @@ class TournamentController extends AbstractController
         $user->addTournament($tour);
         $entityManager->persist($user);
         $entityManager->flush();
-        dump($user);
 
         return $this->redirectToRoute('tournament');
+    }
+
+    #[Route('tournament/show/{id}', name: 'show_tournament')]
+    public function showPlayersTournament($id,TournamentRepository $repoTour): Response
+    {
+
+        $print = $repoTour->findIdWithUser($id);
+        dump($print);
+
+        return $this->render('tournament/show.html.twig',[
+            'print'=>$print,
+        ]);
+
     }
 }

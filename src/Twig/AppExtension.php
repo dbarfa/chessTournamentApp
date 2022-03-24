@@ -5,6 +5,7 @@ namespace App\Twig;
 
 use App\Enumeration\AgeCategoryEnum;
 use App\Enumeration\SexEnum;
+use App\Repository\TournamentRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Security;
 use Twig\Extension\AbstractExtension;
@@ -16,11 +17,14 @@ class AppExtension extends AbstractExtension
 
 
     private $security;
+    private $tourRepo;
 
-    public function __construct(Security $security)
+    public function __construct(Security $security,TournamentRepository $tourRepo)
     {
         $this->security = $security;
+        $this->tourRepo = $tourRepo;
     }
+
 
     public function getFilters(): array
     {
@@ -41,9 +45,19 @@ class AppExtension extends AbstractExtension
 
     public function doSomething($tournament)
     {
+
+        $test = $tournament->getPlayers();
+        $test2 = [];
+        foreach ($test as $t){
+            $test2[] = $t->getId();
+        }
         $user = $this->security->getUser();
 
-        if (($user != null)) {
+        if ($user!=null){
+            $userId = $user->getId();
+        }
+
+        if (($user != null) and !in_array($userId,$test2)  ) {
 
             $userElo = $user->getElo();
 
@@ -93,6 +107,6 @@ class AppExtension extends AbstractExtension
             }
 
         }
-        throw new NotFoundHttpException();
+//        throw new NotFoundHttpException();
     }
 }

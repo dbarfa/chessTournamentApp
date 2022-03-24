@@ -60,8 +60,16 @@
 
         {% for p in print %}
             <tr>
+
+
+{#                {{ dump(p.players) }}#}
+
+
                 <td class="col">{{ p.id }}</td>
-                <td class="col">{{ p.name }}</td>
+                <td class="col"><a href="{{ path('show_tournament',{id : p.id}) }}">{{ p.name }}</a>
+                    
+                    
+                    </td>
                 <td class="col">{{ p.city }}</td>
                 <td class="col">{{ p.date|date('d-m-Y') }}</td>
                 <td class="col">{{ p.ageCat.value }}</td>

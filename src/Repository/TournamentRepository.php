@@ -82,7 +82,7 @@ class TournamentRepository extends ServiceEntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
-    public function findBySearch($search)
+    private function findBySearch($search)
     {
 
         //keyword
@@ -96,9 +96,8 @@ class TournamentRepository extends ServiceEntityRepository
             $qb->setMaxResults($search[1]);
         }
         $qb->orderBy('t.id');
-        return $qb->getQuery()->getResult();
+        return $qb;
     }
-
 
 
     private function _getQbWithSearch($keyword)
@@ -107,14 +106,39 @@ class TournamentRepository extends ServiceEntityRepository
         $qb->where('t.deleted = 0');
         if ($keyword) {
             $qb->andWhere('t.name LIKE :p3');
-            $qb->setParameter('p3', '%'.$keyword . '%');
+            $qb->setParameter('p3', '%' . $keyword . '%');
         }
         return $qb;
     }
 
+    public function findAllWithUser()
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->leftJoin('t.players', 'u');
+        $qb->addSelect('u');
 
+        return $qb->getQuery()->getResult();
+    }
 
+    public function findAllWithUserAndSearch($search)
+    {
+        $qb = $this->findBySearch($search);
+        $qb->leftJoin('t.players', 'u');
+        $qb->addSelect('u');
+        return $qb->getQuery()->getResult();
 
+    }
 
+    public function findIdWithUser($id)
+    {
+        $qb = $this->createQueryBuilder('t');
+
+        $qb->leftJoin('t.players', 'u');
+        $qb->addSelect('u');
+        $qb->where('t.id = :t1');
+        $qb->setParameter('t1', $id);
+
+        return $qb->getQuery()->getResult();
+    }
 
 }

@@ -9,6 +9,7 @@ use App\Repository\TournamentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 #[ORM\Entity(repositoryClass: TournamentRepository::class)]
 class Tournament
@@ -230,9 +231,9 @@ class Tournament
     }
 
     /**
-     * @return Collection<int, User>
+     * @return PersistentCollection
      */
-    public function getPlayers(): Collection
+    public function getPlayers(): PersistentCollection
     {
         return $this->players;
     }
