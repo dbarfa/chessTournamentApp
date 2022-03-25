@@ -47,8 +47,6 @@ class TournamentController extends AbstractController
             $tournament->setDeleted(false);
             $em->persist($tournament);
             $em->flush();
-
-
         }
         return $this->render('tournament/add.html.twig',
             [
