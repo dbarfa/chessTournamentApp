@@ -16,7 +16,7 @@ class MatchesController extends AbstractController
 {
 
 
-    #[Route('/matches', name: 'app_matches')]
+    #[Route('/matchesTest', name: 'matches_test')]
     public function index(MatchesRepository $repo, TournamentRepository $tournamentRepository, UserRepository $userRepository, EntityManagerInterface $em): Response
     {
         $matches = new Matches();
@@ -45,9 +45,6 @@ class MatchesController extends AbstractController
 //      Get players from the tournament and put them in an array sorted by desc elo
 //      implement the robin round algorithm
 
-
-
-
         $players = $tournamentRepository->findIdWithUser($id);
 
 
@@ -59,19 +56,19 @@ class MatchesController extends AbstractController
 //            dump($p);
         }
 //        dump($playerArr);
-
-
+        $playerArr = [1, 2, 3, 4, 5, 6, 7, 8,
+        ];
         for ($round = 1; $round < count($playerArr); $round < $round++) {
 //            dump("round ". $round);
             for ($i = 0; $i < count($playerArr) / 2; $i++) {
-//                dump($i);
+                $t = [WinnerEnum::black,WinnerEnum::white, WinnerEnum::draw];
                 $m = new Matches();
                 $m->setTournament($tournamentRepository->find($id));
                 $m->setWhite($userRepository->find($playerArr[$i])  );
                 $m->setBlack($userRepository->find($playerArr[count($playerArr) - 1 - $i]) );
                 $m->setRound($round);
-                $m->setWinner(WinnerEnum::black);
-                $em->persist($m);
+                $m->setWinner($t[rand(0,count($t)-1)]);
+//                $em->persist($m);
 
                 $matches['round'] = $round;
                 $matches['w'] = $playerArr[$i];
@@ -85,14 +82,26 @@ class MatchesController extends AbstractController
             $var2 = array_slice($playerArr, 1, count($playerArr) - 2);
 
             $playerArr = array_merge_recursive($var1, $var2);
-//            dump($playerArr);
+            dump($playerArr);
 //            dump($matches);
 
         }
 //        $matches = array('w' => 10);
 
-        $em->flush();
+
+//        $em->flush();
     }
 
+    #[Route('matches/{id}', name: 'show_matches')]
+    public function showMatches($id,MatchesRepository $matchesRepository) : Response
+    {
+        $matches = $matchesRepository->findBy(['tournament'=>$id]);
+
+        dump($matches);
+
+        return $this->render('matches/index.html.twig', [
+            'matches'=>$matches
+        ]);
+    }
 
 }

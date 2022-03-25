@@ -1,7 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MatchesController!{% endblock %}
+{% block title %}Matches!{% endblock %}
 
 {% block body %}
+
+    <table class="table table-hover  table-light ">
+
+        <thead>
+        <tr>
+            <th class="col">Match Id</th>
+            <th class="col">Round</th>
+            <th class="col">White vs Black</th>
+            <th class="col">Elo</th>
+            <th class="col">Winner</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        {{ dump(matches) }}
+        {{ dump(matches[0]) }}
+
+        {% for m in matches %}
+            <tr>
+                {#                            {{ dump(m) }} #}
+                <td class="col">{{ m.id }}</td>
+                <td class="col">{{ m.round }}</td>
+                <td class="col">{{ m.white.lastName }} VS {{ m.black.lastName }}</td>
+                <td class="col">{{ m.white.elo }} - {{ m.black.elo }}</td>
+                <td class="col">{{ m.winner.value }}</td>
+            </tr>
+        {% endfor %}
+
+
+        </tbody>
+
+
+    </table>
 
 {% endblock %}
