@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use App\Enumeration\WinnerEnum;
 use App\Repository\MatchesRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MatchesRepository::class)]
@@ -17,85 +15,99 @@ class Matches
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Tournament::class, inversedBy: 'matches')]
-    private $tournamentId;
+    #[ORM\JoinColumn(nullable: false)]
+    private $tournament;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'matches')]
-    private $whiteId;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'whiteMatches')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $white;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'matches')]
-    private $blackId;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'blackMatches')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $black;
 
     #[ORM\Column(type: 'string', enumType: WinnerEnum::class)]
     private $winner;
 
-    public function __construct()
-    {
-        $this->whiteId = new ArrayCollection();
-        $this->blackId = new ArrayCollection();
-    }
+    #[ORM\Column(type: 'integer')]
+    private $round;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTournamentId(): ?Tournament
+    /**
+     * @return mixed
+     */
+    public function getRound()
     {
-        return $this->tournamentId;
+        return $this->round;
     }
 
-    public function setTournamentId(?Tournament $tournamentId): self
+    /**
+     * @param mixed $round
+     * @return Matches
+     */
+    public function setRound($round)
     {
-        $this->tournamentId = $tournamentId;
+        $this->round = $round;
+        return $this;
+    }
 
+
+
+    /**
+     * @return mixed
+     */
+    public function getTournament()
+    {
+        return $this->tournament;
+    }
+
+    /**
+     * @param mixed $tournament
+     * @return Matches
+     */
+    public function setTournament($tournament)
+    {
+        $this->tournament = $tournament;
         return $this;
     }
 
     /**
-     * @return Collection<int, User>
+     * @return mixed
      */
-    public function getWhiteId(): Collection
+    public function getWhite()
     {
-        return $this->whiteId;
+        return $this->white;
     }
 
-    public function addWhiteId(User $whiteId): self
+    /**
+     * @param mixed $white
+     * @return Matches
+     */
+    public function setWhite($white)
     {
-        if (!$this->whiteId->contains($whiteId)) {
-            $this->whiteId[] = $whiteId;
-        }
-
-        return $this;
-    }
-
-    public function removeWhiteId(User $whiteId): self
-    {
-        $this->whiteId->removeElement($whiteId);
-
+        $this->white = $white;
         return $this;
     }
 
     /**
-     * @return Collection<int, User>
+     * @return mixed
      */
-    public function getBlackId(): Collection
+    public function getBlack()
     {
-        return $this->blackId;
+        return $this->black;
     }
 
-    public function addBlackId(User $blackId): self
+    /**
+     * @param mixed $black
+     * @return Matches
+     */
+    public function setBlack($black)
     {
-        if (!$this->blackId->contains($blackId)) {
-            $this->blackId[] = $blackId;
-        }
-
-        return $this;
-    }
-
-    public function removeBlackId(User $blackId): self
-    {
-        $this->blackId->removeElement($blackId);
-
+        $this->black = $black;
         return $this;
     }
 
@@ -116,6 +128,9 @@ class Matches
         $this->winner = $winner;
         return $this;
     }
+
+
+
 
 
 }

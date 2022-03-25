@@ -57,13 +57,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Tournament::class, mappedBy: 'players')]
     private $tournaments;
 
-    #[ORM\ManyToMany(targetEntity: Matches::class, mappedBy: 'whiteId')]
-    private $matches;
+    #[ORM\OneToMany(mappedBy: 'white', targetEntity: Matches::class)]
+    private $whiteMatches;
+
+    #[ORM\OneToMany(mappedBy: 'black', targetEntity: Matches::class)]
+    private $blackMatches;
+
+
 
     public function __construct()
     {
         $this->tournaments = new ArrayCollection();
-        $this->matches = new ArrayCollection();
+        $this->whiteMatches = new ArrayCollection();
+        $this->blackMatches = new ArrayCollection();
     }
 
 
@@ -278,28 +284,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Matches>
      */
-    public function getMatches(): Collection
+    public function getWhiteMatches(): Collection
     {
-        return $this->matches;
+        return $this->whiteMatches;
     }
 
-    public function addMatch(Matches $match): self
+    public function addWhiteMatch(Matches $whiteMatch): self
     {
-        if (!$this->matches->contains($match)) {
-            $this->matches[] = $match;
-            $match->addWhiteId($this);
+        if (!$this->whiteMatches->contains($whiteMatch)) {
+            $this->whiteMatches[] = $whiteMatch;
+            $whiteMatch->setWhite($this);
         }
 
         return $this;
     }
 
-    public function removeMatch(Matches $match): self
+    public function removeWhiteMatch(Matches $whiteMatch): self
     {
-        if ($this->matches->removeElement($match)) {
-            $match->removeWhiteId($this);
+        if ($this->whiteMatches->removeElement($whiteMatch)) {
+            // set the owning side to null (unless already changed)
+            if ($whiteMatch->getWhite() === $this) {
+                $whiteMatch->setWhite(null);
+            }
         }
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Matches>
+     */
+    public function getBlackMatches(): Collection
+    {
+        return $this->blackMatches;
+    }
+
+    public function addBlackMatch(Matches $blackMatch): self
+    {
+        if (!$this->blackMatches->contains($blackMatch)) {
+            $this->blackMatches[] = $blackMatch;
+            $blackMatch->setBlack($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlackMatch(Matches $blackMatch): self
+    {
+        if ($this->blackMatches->removeElement($blackMatch)) {
+            // set the owning side to null (unless already changed)
+            if ($blackMatch->getBlack() === $this) {
+                $blackMatch->setBlack(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 
 }
